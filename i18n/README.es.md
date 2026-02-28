@@ -1,72 +1,79 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
 
-# Clon de OnlyFans App Full Stack
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+# Aplicación Full Stack clon de OnlyFans
 
 ![Expo](https://img.shields.io/badge/Expo-48-000000?logo=expo&logoColor=white)
 ![React Native](https://img.shields.io/badge/React%20Native-0.71-61DAFB?logo=react&logoColor=black)
 ![AWS Amplify](https://img.shields.io/badge/AWS-Amplify-FF9900?logo=amazonaws&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20Web-blue)
 ![Status](https://img.shields.io/badge/Status-Active%20Prototype-2ea44f)
+![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?logo=nodedotjs&logoColor=white)
+![Repo%20Size](https://img.shields.io/github/repo-size/GonzaloVolonterio/react-native-onlyfans-clone-app?label=Repo%20Size&color=0f766e)
 
-### La app clon de OnlyFans es una aplicación full stack, frontend y backend para móvil, que replica las características y funcionalidades.
+Language options: **Inglés (borrador actual)**. Las traducciones están disponibles en `i18n/`.
 
-Este repositorio contiene una app Expo + React Native con backend en AWS Amplify (Cognito, AppSync, DataStore, S3) que implementa los flujos principales de una plataforma para creadores:
-- Autenticación con Amplify Authenticator
-- Lista de creadores y navegación de perfiles
-- Cambio de estado de suscripción en la UI (del lado cliente en la implementación actual)
-- Creación de publicaciones con subida opcional de imágenes
-- Renderizado del feed de publicaciones con recuperación de autor y medios
+### La app clon de OnlyFans es una aplicación full stack para móvil y web que replica funciones y flujos al estilo de plataformas de creadores de contenido.
 
-## 🧭 Resumen
+Este repositorio contiene una app de Expo + React Native con un backend de AWS Amplify (`Cognito`, `AppSync`, `DataStore`, `S3`) que implementa un clon de plataforma de creadores. Incluye autenticación, exploración de creadores, creación de publicaciones, carga de medios y estados de suscripción en la UI.
 
-La app usa enrutamiento basado en archivos con `expo-router` en `app/`, mientras que los recursos del backend de Amplify se rastrean en `amplify/`. Al iniciar sesión, la app escucha eventos de autenticación de Amplify Hub e intenta crear un registro `User` correspondiente en AppSync.
+## 🧭 Vista general
+
+La app está construida con Expo Router en `app/` y una capa local de datos de Amplify ligada a recursos de backend ya versionados en `amplify/`.
 
 | Área | Implementación actual |
 |---|---|
 | Frontend | Expo + React Native + Expo Router |
-| Auth | Amazon Cognito mediante Amplify Authenticator |
+| Enrutado | Enrutado basado en archivos en `app/` |
+| Auth | Amazon Cognito vía `@aws-amplify/ui-react-native` |
 | API | AWS AppSync GraphQL |
 | Sincronización de datos | Amplify DataStore |
 | Medios | S3 mediante Amplify Storage |
 | Plataformas | iOS, Android, Web |
 
-## ✨ Funcionalidades
+Al iniciar sesión, `app/_layout.js` escucha eventos de autenticación de Amplify Hub y trata de crear un registro `User` en AppSync. Esto se gestiona al arrancar la app.
 
-- Flujo de autenticación impulsado por Cognito mediante `@aws-amplify/ui-react-native`
+## ✨ Características
+
+- Flujo de autenticación potenciado por Cognito con el Autenticador de Amplify
 - Modelos GraphQL de AppSync para `User` y `Post`
 - Persistencia y sincronización de datos mediante Amplify DataStore
-- Subida y recuperación de medios en S3 mediante Amplify Storage
-- Pantallas de Expo Router:
-  - `app/index.js` lista de creadores/inicio
-  - `app/user/[id].js` perfil del creador + publicaciones
-  - `app/newPost.js` compositor de publicaciones
+- Carga y recuperación de imágenes en S3 vía Amplify Storage
+- Enrutado basado en archivos con Expo Router:
+  - `app/index.js`: lista de creadores y feed principal
+  - `app/user/[id].js`: perfil del creador y publicaciones
+  - `app/newPost.js`: creador de publicaciones
+- Componentes de presentación reutilizables:
+  - `src/components/UserCard.js`
+  - `src/components/UserProfileHeader.js`
+  - `src/components/Post.js`
 
-## 🛠️ Tecnologías
-
-(Lista de stack original conservada y ampliada para mayor claridad.)
+## 🛠️ Construido con
 
 ```text
-Expo
-React
-React Native
-Expo crypto
-Expo image picker
-Expo linking
-Aws amplify/ ui-react-native
-Amazon cognito identity-js
-Aws-amplify
-Javascript
-StyleSheet
-React Native gesture handler
-React native reanimated
+Expo 48
+React 18.2.0
+React Native 0.71.6
+Expo Router
+AWS Amplify (+ ui-react-native)
+Amazon Cognito
+AppSync
+DataStore
+S3
+expo-image-picker
+expo-crypto
+expo-router
+react-native-reanimated
+react-native-gesture-handler
 ```
 
-Dependencias adicionales del repositorio en `package.json` incluyen:
-- `expo-router`
+Dependencias adicionales en `package.json`:
 - `@react-native-async-storage/async-storage`
 - `@react-native-community/netinfo`
 - `core-js`
+- `expo-constants`, `expo-linking`, `expo-updates` y herramientas de iconos/pantallas
 
 ## 🗂️ Estructura del proyecto
 
@@ -83,34 +90,44 @@ Dependencias adicionales del repositorio en `package.json` incluyen:
 │  │  ├─ UserCard.js
 │  │  └─ UserProfileHeader.js
 │  ├─ models/
-│  └─ aws-exports.js (generated locally; not committed)
+│  │  ├─ index.js
+│  │  ├─ schema.js
+│  │  └─ schema.d.ts
+│  └─ aws-exports.js (generado localmente; no se incluye en el repo)
 ├─ amplify/
-│  └─ backend/
-│     ├─ api/OnlyFansCloneApp/schema.graphql
-│     ├─ auth/OnlyFansCloneApp/
-│     └─ storage/s3onlyfanscloneappstorageb3e1fac4/
+│  ├─ backend/
+│  │  ├─ api/OnlyFansCloneApp/schema.graphql
+│  │  ├─ auth/OnlyFansCloneApp/
+│  │  └─ storage/s3onlyfanscloneappstorageb3e1fac4/
+│  ├─ cli.json
+│  └─ team-provider-info.json
 ├─ i18n/
+│  ├─ README.ar.md
+│  ├─ README.de.md
+│  ├─ README.es.md
+│  ├─ README.fr.md
+│  ├─ README.ja.md
+│  ├─ README.ko.md
+│  ├─ README.ru.md
+│  ├─ README.vi.md
+│  ├─ README.zh-Hans.md
+│  └─ README.zh-Hant.md
 ├─ app.json
 ├─ babel.config.js
 ├─ index.js
-└─ package.json
+├─ package.json
+└─ package-lock.json
 ```
 
-## ✅ Prerrequisitos
+## ✅ Requisitos previos
 
-- Node.js 18+ recomendado
+- Node.js 18+ (o LTS moderno)
 - npm
-- Uso de Expo CLI mediante `npx expo ...`
-- Cuenta de AWS y Amplify CLI para aprovisionamiento/pull del backend
-- Un archivo de configuración de cliente de Amplify generado e importado por la app como `src/aws-exports`
+- Expo CLI (se puede ejecutar con `npx expo`)
+- Cuenta AWS y AWS Amplify CLI si necesitas generar `src/aws-exports.js`
+- Simuladores de Apple/Android o un dispositivo físico con Expo Go para probar la app
 
-## 📥 Clonar repositorio 🔧
-
-```bash
-https://github.com/GonzaloVolonterio/react-native-onlyfans-clone-app
-```
-
-Comando equivalente:
+## 📥 Clonar repo 🔧
 
 ```bash
 git clone https://github.com/GonzaloVolonterio/react-native-onlyfans-clone-app.git
@@ -119,15 +136,11 @@ cd react-native-onlyfans-clone-app
 
 ## ⚙️ Instalación 🔧
 
-(Comandos de instalación originales conservados.)
-
 ```bash
 npm install
-
-npx expo start or npm start
 ```
 
-Scripts del repositorio:
+Scripts del repositorio en `package.json`:
 
 ```bash
 npm start
@@ -136,62 +149,64 @@ npm run ios
 npm run web
 ```
 
+Luego inicia la app:
+
+```bash
+npm start
+```
+
 ## 🔐 Configuración
 
 ### Backend de Amplify
 
-La app importa `../src/aws-exports` en `app/_layout.js`. Ese archivo no está versionado y debe generarse localmente.
+La app importa `../src/aws-exports` en `app/_layout.js`. Este archivo es obligatorio en tiempo de ejecución y, por diseño, no se incluye en el repositorio.
 
-Flujo de configuración típico (suposición basada en la carpeta `amplify/` versionada y `.gitignore`):
+Configuración local típica:
 
 ```bash
 npm install -g @aws-amplify/cli
 amplify pull
 ```
 
-Si se solicita, usa el proyecto/entorno de Amplify existente de tu cuenta AWS. La configuración del backend versionada indica:
-- Auth: Cognito (usuario por email, atributos de registro incluyen `NAME` y `NICKNAME`)
-- API: AppSync + autenticación con API key habilitada en la configuración
-- Storage: recurso de bucket S3 configurado
+Si se solicita, selecciona el proyecto/entorno de AWS Amplify existente para este repositorio.
 
-### Expo / Babel / Router
+### Supuestos del modelo de datos desde el esquema versionado
 
-- `babel.config.js` incluye:
-  - `@babel/plugin-proposal-export-namespace-from`
-  - `react-native-reanimated/plugin`
-  - `expo-router/babel`
-- `index.js` inicializa `core-js/full/symbol/async-iterator` y `expo-router/entry`
+- `User`: los campos incluyen `id`, `name`, `handle`, `bio`, `avatar`, `coverImage`, `subscriptionPrice` y la relación con `Post`
+- `Post`: los campos incluyen `id`, `text`, `image`, `likes`, `userID`
+- Ambos modelos están configurados actualmente con visibilidad pública de lectura en el esquema/configuración auth versionados
+
+### Expo / enrutado / Babel
+
+- `index.js` conecta la entrada de React Native y `expo-router/entry`
+- `babel.config.js` incluye `expo-router/babel`, `react-native-reanimated/plugin` y el plugin de exportación de namespaces
 
 ## ▶️ Uso
 
-1. Inicia la app:
+1. Instala dependencias y genera/obtén el `src/aws-exports.js` local
+2. Inicia Metro:
    ```bash
    npm start
    ```
-2. Abre en Expo Go/emulador/web.
-3. Regístrate/inicia sesión mediante la UI de Amplify Authenticator.
-4. Explora creadores en la pantalla principal.
-5. Abre un perfil de creador (`/user/[id]`).
-6. Cambia el estado de suscripción en la UI.
-7. Crea una publicación nueva desde `New post`, adjuntando opcionalmente una imagen desde la biblioteca multimedia.
+3. Abre la app en Expo Go, en un simulador o en web
+4. Regístrate / inicia sesión mediante Authenticator
+5. Explora creadores en `/`
+6. Abre un perfil de creador en `/user/:id`
+7. Alterna el estado de suscripción en la interfaz
+8. Crea publicaciones en `/newPost`, con adjunto de medio opcional
 
-## 🧱 Modelo de datos
+## 🧱 Notas del modelo de datos
 
-De `amplify/backend/api/OnlyFansCloneApp/schema.graphql`:
-
-- `User`: `id`, `name`, `handle`, `bio`, `avatar`, `coverImage`, `subscriptionPrice`, relación con publicaciones
-- `Post`: `id`, `text`, `image`, `likes`, `userID`
-
-Ambos modelos usan reglas de autenticación pública en el esquema actual.
+Los modelos se definen en `amplify/backend/api/OnlyFansCloneApp/schema.graphql` y `src/models/schema.js`.
 
 | Modelo | Campos clave |
 |---|---|
 | `User` | `id`, `name`, `handle`, `bio`, `avatar`, `coverImage`, `subscriptionPrice` |
 | `Post` | `id`, `text`, `image`, `likes`, `userID` |
 
-## 📱 Ejemplos de la app
+## 📱 Ejemplos
 
-### Necesitas crear una cuenta gratuita para usar la app
+### Capturas de ejemplo
 
 ![Screenshot_20230424-200925](https://user-images.githubusercontent.com/64506662/234364566-863bc1e1-e289-4b9b-9658-a11e737bebd8.png)
 ![Screenshot_20230424-200957](https://user-images.githubusercontent.com/64506662/234364579-8e32708f-cb69-4c1c-82e3-eefd7cb5f161.png)
@@ -201,29 +216,35 @@ Ambos modelos usan reglas de autenticación pública en el esquema actual.
 
 ## 🧪 Notas de desarrollo
 
-- `app/_layout.js` escucha eventos `auth` de Amplify Hub al iniciar sesión y ejecuta una mutación GraphQL `createUser`.
-- Las publicaciones nuevas se guardan con DataStore y las imágenes opcionales se suben con `Storage.put`.
-- El comportamiento de suscripción en el perfil actualmente es estado local de UI y no se persiste como modelo de suscripción en backend.
-- Actualmente el repositorio no tiene una suite de pruebas automatizadas ni archivos de workflow de CI explícitos.
+- `app/_layout.js` registra Amplify con `Amplify.configure` y se suscribe a los eventos `auth` de Hub.
+- En cada evento de inicio de sesión, el código dispara una mutación `createUser` para inicializar un registro en el backend.
+- `app/newPost.js` sube una imagen opcional, compone el payload de publicación y luego persiste mediante `DataStore.save`.
+- `src/components/Post.js` resuelve autores de publicaciones y URLs de imágenes dinámicamente al renderizar elementos del feed.
+- El backend y los datos semilla son actualmente mínimos, sin script automatizado de configuración en el repositorio.
+- No hay una suite de pruebas dedicada ni flujo de CI configurado en este repositorio.
 
 ## 🩺 Solución de problemas
 
-- `Cannot find module '../src/aws-exports'`:
-  - Ejecuta `amplify pull` (o el flujo equivalente de init en Amplify) para generar la configuración local.
-- La autenticación funciona pero fallan las operaciones de datos:
-  - Confirma que la configuración de AppSync/API key/modo de auth en tu entorno Amplify coincide con la configuración generada localmente.
-- Problemas al subir imágenes:
-  - Verifica permisos de S3 en Amplify Storage y asegúrate de que el dispositivo tenga acceso a la biblioteca multimedia.
-- Feed/perfil sin datos:
-  - Asegúrate de que existan registros `User`/`Post` iniciales y de que las reglas de auth actuales permitan operaciones de lectura.
+- `Cannot find module '../src/aws-exports'`
+  - Ejecuta `amplify pull` (o un flujo equivalente de `amplify init`) desde la raíz del repositorio para generar la configuración local.
+- La autenticación funciona, pero fallan consultas/mutaciones
+  - Verifica que tu clave de API/AppSync, modo de auth y región de AppSync coincidan con la configuración generada importada.
+- Falla la carga de imágenes
+  - Asegúrate de que existan permisos `Storage` y que la app tenga acceso a la librería multimedia.
+- Datos vacíos en creador/feed
+  - Confirma que existan registros iniciales de `User`/`Post` en DataStore/AppSync y que las reglas de lectura pública encajen con tu caso de uso.
+- El estado de suscripción del post no se persiste
+  - La implementación actual parece ser solo de estado local en UI; el modelo de derecho de suscripción en backend aún no está implementado.
 
 ## 🗺️ Hoja de ruta
 
-- Añadir relaciones de suscripción persistentes y validaciones de permisos
-- Añadir validaciones y manejo de errores más completo para flujos de creación/subida de publicaciones
-- Añadir pruebas (unit/integration/e2e) y pipeline de CI
-- Añadir variantes README multilingües y poblar recursos en `i18n/`
-- Endurecer reglas de auth/acceso (reemplazar reglas públicas amplias cuando corresponda)
+- Persistir relaciones de suscripción/entitlements en modelos de backend
+- Añadir datos semilla y flujo de reinicio compatible con migraciones de datos
+- Mejorar validación de publicaciones y estados de error
+- Añadir pruebas automatizadas (unit/integración/e2e)
+- Añadir CI/CD y revisiones de lint/tipos
+- Expandir documentación internacional y mantener sincronizados los README en i18n
+- Endurecer autenticación y reglas de acceso a datos donde sea necesario
 
 ## 🤝 Contribuciones
 
@@ -232,19 +253,27 @@ Las contribuciones son bienvenidas.
 Flujo sugerido:
 
 ```bash
-git checkout -b feat/your-change
-# implement change
-git commit -m "feat: describe change"
-git push origin feat/your-change
+git checkout -b feat/tu-cambio
+# implementa el cambio
+npm start
+git commit -m "feat: describe tu cambio"
+git push origin feat/tu-cambio
 ```
 
-Luego abre un Pull Request con:
+Luego abre un Pull Request indicando:
 - Qué cambió
 - Por qué cambió
-- Cómo ejecutarlo/probarlo
+- Cómo se ejecuta/probar
 
 ## 📄 Licencia
 
-Actualmente no hay un archivo `LICENSE` en este repositorio.
+Actualmente no existe un archivo `LICENSE` en este repositorio.
 
-Suposición: todos los derechos están reservados por defecto, a menos que el mantenedor añada un archivo de licencia explícito.
+Supuesto: todos los derechos quedan reservados salvo que el mantenedor añada un archivo de licencia explícito.
+
+
+## ❤️ Support
+
+| Donate | PayPal | Stripe |
+| --- | --- | --- |
+| [![Donate](https://camo.githubusercontent.com/24a4914f0b42c6f435f9e101621f1e52535b02c225764b2f6cc99416926004b7/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446f6e6174652d4c617a79696e674172742d3045413545393f7374796c653d666f722d7468652d6261646765266c6f676f3d6b6f2d6669266c6f676f436f6c6f723d7768697465)](https://chat.lazying.art/donate) | [![PayPal](https://camo.githubusercontent.com/d0f57e8b016517a4b06961b24d0ca87d62fdba16e18bbdb6aba28e978dc0ea21/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f50617950616c2d526f6e677a686f754368656e2d3030343537433f7374796c653d666f722d7468652d6261646765266c6f676f3d70617970616c266c6f676f436f6c6f723d7768697465)](https://paypal.me/RongzhouChen) | [![Stripe](https://camo.githubusercontent.com/1152dfe04b6943afe3a8d2953676749603fb9f95e24088c92c97a01a897b4942/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5374726970652d446f6e6174652d3633354246463f7374796c653d666f722d7468652d6261646765266c6f676f3d737472697065266c6f676f436f6c6f723d7768697465)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |

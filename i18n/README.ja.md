@@ -1,74 +1,81 @@
 [English](../README.md) · [العربية](README.ar.md) · [Español](README.es.md) · [Français](README.fr.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Tiếng Việt](README.vi.md) · [中文 (简体)](README.zh-Hans.md) · [中文（繁體）](README.zh-Hant.md) · [Deutsch](README.de.md) · [Русский](README.ru.md)
 
 
-# OnlyFans クローン Full Stack アプリ
+[![LazyingArt banner](https://github.com/lachlanchen/lachlanchen/raw/main/figs/banner.png)](https://github.com/lachlanchen/lachlanchen/blob/main/figs/banner.png)
+
+# OnlyFans クローン フルスタックアプリ
 
 ![Expo](https://img.shields.io/badge/Expo-48-000000?logo=expo&logoColor=white)
 ![React Native](https://img.shields.io/badge/React%20Native-0.71-61DAFB?logo=react&logoColor=black)
 ![AWS Amplify](https://img.shields.io/badge/AWS-Amplify-FF9900?logo=amazonaws&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20Android%20%7C%20Web-blue)
 ![Status](https://img.shields.io/badge/Status-Active%20Prototype-2ea44f)
+![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?logo=nodedotjs&logoColor=white)
+![Repo%20Size](https://img.shields.io/github/repo-size/GonzaloVolonterio/react-native-onlyfans-clone-app?label=Repo%20Size&color=0f766e)
 
-### OnlyFans クローンアプリは、モバイル向けに同等の機能と体験を再現したフルスタック（フロントエンド + バックエンド）アプリです。
+Language options: **English (current draft)**. Translations are available under `i18n/`.
 
-このリポジトリには、AWS Amplify バックエンド（Cognito、AppSync、DataStore、S3）を備えた Expo + React Native アプリが含まれており、クリエイタープラットフォームの主要フローを実装しています。
-- Amplify Authenticator を使った認証
-- クリエイター一覧・プロフィール閲覧
-- サブスク UI 状態の切り替え（現実装ではクライアント側のみ）
-- 任意の画像アップロード付き投稿作成
-- 投稿フィード表示（投稿者情報・メディア取得を含む）
+### OnlyFans クローンアプリは、モバイルと Web の両方でクリエイタープラットフォーム風の機能とフローを再現するフルスタックアプリです。
 
-## 🧭 概要
+このリポジトリには、AWS Amplify バックエンド（`Cognito`、`AppSync`、`DataStore`、`S3`）を利用した Expo + React Native アプリが含まれており、クリエイター向けプラットフォームのクローンを実装しています。認証、クリエイター閲覧、投稿作成、メディアアップロード、サブスクリプションの UI 状態管理を備えています。
 
-アプリは `app/` 配下で `expo-router` によるファイルベースルーティングを使用し、Amplify バックエンドリソースは `amplify/` 配下で管理されています。ユーザーサインイン時には Amplify Hub の auth イベントを監視し、対応する `User` レコードを AppSync に作成しようとします。
+## 🧭 Overview
+
+アプリは `app/` 配下で Expo Router を使って構築されており、`amplify/` のコミット済みバックエンドリソースに紐づくローカル Amplify データレイヤーを持ちます。
 
 | 領域 | 現在の実装 |
 |---|---|
 | Frontend | Expo + React Native + Expo Router |
-| Auth | Amplify Authenticator 経由の Amazon Cognito |
+| Routing | `app/` のファイルベースルーティング |
+| Auth | `@aws-amplify/ui-react-native` 経由の Amazon Cognito |
 | API | AWS AppSync GraphQL |
 | Data sync | Amplify DataStore |
 | Media | Amplify Storage 経由の S3 |
 | Platforms | iOS, Android, Web |
 
-## ✨ 機能
+サインイン時、`app/_layout.js` は Amplify Hub の auth イベントを監視し、AppSync の `User` レコードを作成しようとします。これはアプリ起動時に行われます。
 
-- `@aws-amplify/ui-react-native` 経由の Cognito 認証フロー
+## ✨ Features
+
+- Amplify Authenticator で Cognito を用いた認証フロー
 - `User` と `Post` の AppSync GraphQL モデル
 - Amplify DataStore によるデータ永続化と同期
-- Amplify Storage による S3 メディアのアップロードと取得
-- Expo Router 画面:
-  - `app/index.js` クリエイター一覧/ホーム
-  - `app/user/[id].js` クリエイタープロフィール + 投稿
-  - `app/newPost.js` 投稿作成
+- Amplify Storage 経由の S3 画像アップロードと取得
+- Expo Router のファイルベースルーティング:
+  - `app/index.js`: クリエイター一覧・ホームフィード
+  - `app/user/[id].js`: クリエイタープロフィールと投稿
+  - `app/newPost.js`: 投稿作成画面
+- 再利用可能な表示コンポーネント:
+  - `src/components/UserCard.js`
+  - `src/components/UserProfileHeader.js`
+  - `src/components/Post.js`
 
-## 🛠️ 使用技術
-
-（元のスタック一覧を保持し、分かりやすさのために拡張しています。）
+## 🛠️ Built With
 
 ```text
-Expo
-React
-React Native
-Expo crypto
-Expo image picker
-Expo linking
-Aws amplify/ ui-react-native
-Amazon cognito identity-js
-Aws-amplify
-Javascript
-StyleSheet
-React Native gesture handler
-React native reanimated
+Expo 48
+React 18.2.0
+React Native 0.71.6
+Expo Router
+AWS Amplify (+ ui-react-native)
+Amazon Cognito
+AppSync
+DataStore
+S3
+expo-image-picker
+expo-crypto
+expo-router
+react-native-reanimated
+react-native-gesture-handler
 ```
 
-`package.json` に含まれる追加依存関係:
-- `expo-router`
+`package.json` の追加依存関係:
 - `@react-native-async-storage/async-storage`
 - `@react-native-community/netinfo`
 - `core-js`
+- `expo-constants`、`expo-linking`、`expo-updates`、および icon/screen tooling
 
-## 🗂️ プロジェクト構成
+## 🗂️ Project Structure
 
 ```text
 .
@@ -83,51 +90,57 @@ React native reanimated
 │  │  ├─ UserCard.js
 │  │  └─ UserProfileHeader.js
 │  ├─ models/
+│  │  ├─ index.js
+│  │  ├─ schema.js
+│  │  └─ schema.d.ts
 │  └─ aws-exports.js (generated locally; not committed)
 ├─ amplify/
-│  └─ backend/
-│     ├─ api/OnlyFansCloneApp/schema.graphql
-│     ├─ auth/OnlyFansCloneApp/
-│     └─ storage/s3onlyfanscloneappstorageb3e1fac4/
+│  ├─ backend/
+│  │  ├─ api/OnlyFansCloneApp/schema.graphql
+│  │  ├─ auth/OnlyFansCloneApp/
+│  │  └─ storage/s3onlyfanscloneappstorageb3e1fac4/
+│  ├─ cli.json
+│  └─ team-provider-info.json
 ├─ i18n/
+│  ├─ README.ar.md
+│  ├─ README.de.md
+│  ├─ README.es.md
+│  ├─ README.fr.md
+│  ├─ README.ja.md
+│  ├─ README.ko.md
+│  ├─ README.ru.md
+│  ├─ README.vi.md
+│  ├─ README.zh-Hans.md
+│  └─ README.zh-Hant.md
 ├─ app.json
 ├─ babel.config.js
 ├─ index.js
-└─ package.json
+├─ package.json
+└─ package-lock.json
 ```
 
-## ✅ 前提条件
+## ✅ Prerequisites
 
-- Node.js 18+ 推奨
+- Node.js 18+（または同等のモダン LTS）
 - npm
-- `npx expo ...` による Expo CLI 利用
-- バックエンドのプロビジョニング/取得（pull）のための AWS アカウントと Amplify CLI
-- アプリが `src/aws-exports` として読み込む、生成済み Amplify クライアント設定ファイル
+- Expo CLI（`npx expo` で実行可）
+- `src/aws-exports.js` を生成するための AWS アカウントと Amplify CLI
+- Apple/Android エミュレーター、または実機の Expo Go
 
-## 📥 リポジトリをクローン 🔧
-
-```bash
-https://github.com/GonzaloVolonterio/react-native-onlyfans-clone-app
-```
-
-同等のコマンド:
+## 📥 Clone repo 🔧
 
 ```bash
 git clone https://github.com/GonzaloVolonterio/react-native-onlyfans-clone-app.git
 cd react-native-onlyfans-clone-app
 ```
 
-## ⚙️ インストール 🔧
-
-（元のインストールコマンドを保持しています。）
+## ⚙️ Installation 🔧
 
 ```bash
 npm install
-
-npx expo start or npm start
 ```
 
-リポジトリのスクリプト:
+`package.json` のスクリプト:
 
 ```bash
 npm start
@@ -136,62 +149,64 @@ npm run ios
 npm run web
 ```
 
-## 🔐 設定
+アプリを起動します:
 
-### Amplify バックエンド
+```bash
+npm start
+```
 
-アプリは `app/_layout.js` で `../src/aws-exports` をインポートします。このファイルはコミットされておらず、ローカルで生成する必要があります。
+## 🔐 Configuration
 
-一般的なセットアップフロー（コミット済みの `amplify/` フォルダと `.gitignore` に基づく想定）:
+### Amplify backend
+
+アプリは `app/_layout.js` で `../src/aws-exports` をインポートします。このファイルは実行時に必要ですが、意図的にコミットされていません。
+
+ローカル環境での基本セットアップ:
 
 ```bash
 npm install -g @aws-amplify/cli
 amplify pull
 ```
 
-プロンプトが表示された場合は、AWS アカウント内の既存 Amplify プロジェクト/環境を使用してください。コミット済みバックエンド設定から次が確認できます。
-- Auth: Cognito（email username、signup attributes に `NAME` と `NICKNAME` を含む）
-- API: AppSync + 設定上で API key auth が有効
-- Storage: S3 バケットリソースを設定済み
+プロンプトが表示されたら、このリポジトリに対応する既存の AWS Amplify プロジェクト/環境を選択します。
 
-### Expo / Babel / Router
+### Data model assumptions from committed schema
 
-- `babel.config.js` には以下を含みます:
-  - `@babel/plugin-proposal-export-namespace-from`
-  - `react-native-reanimated/plugin`
-  - `expo-router/babel`
-- `index.js` は `core-js/full/symbol/async-iterator` と `expo-router/entry` を初期化します
+- `User`: フィールドは `id`、`name`、`handle`、`bio`、`avatar`、`coverImage`、`subscriptionPrice`、`Post` とのリレーションを含む
+- `Post`: フィールドは `id`、`text`、`image`、`likes`、`userID`
+- どちらのモデルも現在はコミット済みのスキーマ／認証設定で public read レベルの可視性が有効
 
-## ▶️ 使い方
+### Expo / routing / Babel
 
-1. アプリを起動:
+- `index.js` は React Native エントリーと `expo-router/entry` を接続
+- `babel.config.js` には `expo-router/babel`、`react-native-reanimated/plugin`、`@babel/plugin-proposal-export-namespace-from` を含める
+
+## ▶️ Usage
+
+1. 依存関係をインストールし、ローカルの `src/aws-exports.js` を生成または取得する
+2. Metro を起動:
    ```bash
    npm start
    ```
-2. Expo Go / エミュレーター / Web で開きます。
-3. Amplify Authenticator UI からサインアップ/サインインします。
-4. ホーム画面でクリエイターを閲覧します。
-5. クリエイタープロフィール（`/user/[id]`）を開きます。
-6. UI 上でサブスク状態を切り替えます。
-7. `New post` から新規投稿を作成し、必要に応じてメディアライブラリから画像を添付します。
+3. Expo Go、シミュレーター、または Web でアプリを開く
+4. Authenticator でサインアップ / サインインする
+5. `/` でクリエイターを閲覧する
+6. `/user/:id` でクリエイタープロフィールを開く
+7. UI 上でサブスク状態を切り替える
+8. `/newPost` で投稿を作成し、必要に応じて画像を添付する
 
-## 🧱 データモデル
+## 🧱 Data Model Notes
 
-`amplify/backend/api/OnlyFansCloneApp/schema.graphql` より:
-
-- `User`: `id`, `name`, `handle`, `bio`, `avatar`, `coverImage`, `subscriptionPrice`, 投稿とのリレーション
-- `Post`: `id`, `text`, `image`, `likes`, `userID`
-
-現在のスキーマでは、どちらのモデルも public auth rules を使用しています。
+モデルは `amplify/backend/api/OnlyFansCloneApp/schema.graphql` と `src/models/schema.js` で定義されています。
 
 | モデル | 主要フィールド |
 |---|---|
-| `User` | `id`, `name`, `handle`, `bio`, `avatar`, `coverImage`, `subscriptionPrice` |
-| `Post` | `id`, `text`, `image`, `likes`, `userID` |
+| `User` | `id`、`name`、`handle`、`bio`、`avatar`、`coverImage`、`subscriptionPrice` |
+| `Post` | `id`、`text`、`image`、`likes`、`userID` |
 
-## 📱 アプリ例
+## 📱 Examples
 
-### アプリ利用には無料アカウントの作成が必要です
+### Demo screenshots
 
 ![Screenshot_20230424-200925](https://user-images.githubusercontent.com/64506662/234364566-863bc1e1-e289-4b9b-9658-a11e737bebd8.png)
 ![Screenshot_20230424-200957](https://user-images.githubusercontent.com/64506662/234364579-8e32708f-cb69-4c1c-82e3-eefd7cb5f161.png)
@@ -199,52 +214,60 @@ amplify pull
 ![Screenshot_20230424-201006](https://user-images.githubusercontent.com/64506662/234364653-73de6b92-b7a6-4ef7-a3a6-c26411bfd46a.png)
 ![Screenshot_20230424-201031](https://user-images.githubusercontent.com/64506662/234364754-f5ce7da1-1ad1-4e90-bf85-40add436ad23.png)
 
-## 🧪 開発ノート
+## 🧪 Development Notes
 
-- `app/_layout.js` は Amplify Hub `auth` の sign-in イベントを監視し、`createUser` GraphQL mutation を実行します。
-- 新規投稿は DataStore に保存され、任意画像は `Storage.put` でアップロードされます。
-- プロフィールのサブスク挙動は現在ローカル UI 状態のみで、バックエンドのサブスクモデルとしては永続化されていません。
-- 現在このリポジトリには明示的な自動テストスイートや CI ワークフローファイルはありません。
+- `app/_layout.js` では `Amplify.configure` で Amplify を登録し、Hub の `auth` イベントを購読します。
+- サインインイベントごとに `createUser` mutation を実行して、バックエンド側のレコードを初期化します。
+- `app/newPost.js` は任意画像をアップロードして投稿内容を組み立て、`DataStore.save` で保存します。
+- `src/components/Post.js` はフィード表示時に投稿者情報と画像 URL を動的に解決します。
+- バックエンドとシードデータは現在最小限で、リポジトリ内の自動化されたセットアップスクリプトはありません。
+- 本リポジトリには専用のテストスイートや CI ワークフローは設定されていません。
 
-## 🩺 トラブルシューティング
+## 🩺 Troubleshooting
 
-- `Cannot find module '../src/aws-exports'`:
-  - ローカル設定を生成するために `amplify pull`（または同等の Amplify 初期化フロー）を実行してください。
-- 認証は動作するがデータ操作に失敗する:
-  - Amplify 環境の AppSync/API key/auth mode 設定が、ローカル生成設定と一致していることを確認してください。
-- 画像アップロードの問題:
-  - Amplify storage の S3 権限を確認し、デバイスにメディアライブラリアクセス許可があることを確認してください。
-- フィード/プロフィールデータが空:
-  - `User`/`Post` レコードが投入済みであり、現在の auth rules で読み取り可能であることを確認してください。
+- `Cannot find module '../src/aws-exports'`
+  - `amplify pull`（または一致する `amplify init` フロー）をリポジトリのルートから実行してローカル設定を生成してください。
+- 認証は成功するがクエリ/ミューテーションが失敗する
+  - AppSync/API キー・認証モード・リージョンがローカルの生成設定と一致しているか確認してください。
+- 画像アップロードに失敗する
+  - `Storage` の権限が付与されているか、アプリがメディアライブラリアクセスを持っているか確認してください。
+- クリエイター/フィードデータが空
+  - DataStore/AppSync に初期 `User` / `Post` レコードが存在し、公開読み取りルールが利用ケースに合っていることを確認してください。
+- 投稿のサブスクリプション状態が永続化されない
+  - 現在の実装では UI 側のみで、バックエンド側のエンタイトルメントモデルはまだ未実装です。
 
-## 🗺️ ロードマップ
+## 🗺️ Roadmap
 
-- 永続化されたサブスクリプション関係と権限チェックの追加
-- 投稿作成/アップロードフローのバリデーションとエラーハンドリング強化
-- テスト（unit/integration/e2e）と CI パイプラインの追加
-- 多言語 README バリアント追加と `i18n/` リソースの整備
-- 認証/アクセスルールの強化（必要に応じて広範な public rules を置き換え）
+- サブスクリプション関係／権利をバックエンドモデルに永続化する
+- シードデータの追加とデータ移行しやすいリセットフローを追加する
+- 投稿バリデーションとエラー状態の改善
+- 自動テスト（unit/integration/e2e）を追加する
+- CI/CD と lint/type チェックを追加する
+- 国際化ドキュメントを拡張し、i18n README を同期させ続ける
+- 必要に応じて認証とデータアクセスルールを強化する
 
-## 🤝 コントリビュート
+## 🤝 Contributing
 
-コントリビューションを歓迎します。
+Contributions are welcome.
 
-推奨フロー:
+Suggested flow:
 
 ```bash
 git checkout -b feat/your-change
 # implement change
-git commit -m "feat: describe change"
+npm start
+git commit -m "feat: describe your change"
 git push origin feat/your-change
 ```
 
-続いて Pull Request を作成し、以下を記載してください:
-- 何を変更したか
-- なぜ変更したか
-- 実行/テスト方法
+## ❤️ Support
 
-## 📄 ライセンス
+| Donate | PayPal | Stripe |
+| --- | --- | --- |
+| [![Donate](https://camo.githubusercontent.com/24a4914f0b42c6f435f9e101621f1e52535b02c225764b2f6cc99416926004b7/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446f6e6174652d4c617a79696e674172742d3045413545393f7374796c653d666f722d7468652d6261646765266c6f676f3d6b6f2d6669266c6f676f436f6c6f723d7768697465)](https://chat.lazying.art/donate) | [![PayPal](https://camo.githubusercontent.com/d0f57e8b016517a4b06961b24d0ca87d62fdba16e18bbdb6aba28e978dc0ea21/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f50617950616c2d526f6e677a686f754368656e2d3030343537433f7374796c653d666f722d7468652d6261646765266c6f676f3d70617970616c266c6f676f436f6c6f723d7768697465)](https://paypal.me/RongzhouChen) | [![Stripe](https://camo.githubusercontent.com/1152dfe04b6943afe3a8d2953676749603fb9f95e24088c92c97a01a897b4942/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5374726970652d446f6e6174652d3633354246463f7374796c653d666f722d7468652d6261646765266c6f676f3d737472697065266c6f676f436f6c6f723d7768697465)](https://buy.stripe.com/aFadR8gIaflgfQV6T4fw400) |
 
-現在、このリポジトリには `LICENSE` ファイルが存在しません。
+## 📄 License
 
-想定: メンテナーが明示的なライセンスファイルを追加しない限り、デフォルトでは all rights reserved です。
+No `LICENSE` file is currently present in this repository.
+
+Assumption: all rights are reserved unless the maintainer adds an explicit license file.
